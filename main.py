@@ -1,5 +1,5 @@
 import opcodes_and_func as ops
-from instruction_decoder_riscV import decodification as d
+import decodification as d
 
 handler = {
     "0110011": d.r_type_decode,

@@ -20,7 +20,6 @@ def split_chain(binary_chain: str, as_uncoded= False) -> list:
 
 def shift_logical(funct3: int, imm: int) -> str:
     operation = ""
-
     shift_logical_ops= {
     (1,0): "slli",
     (5,0): "srli",
@@ -28,6 +27,7 @@ def shift_logical(funct3: int, imm: int) -> str:
 
     if (funct3, imm) in shift_logical_ops:
         return shift_logical_ops[(funct3, imm)]
+
     else:
         return f"[shift logical {funct3},{imm} not found]"
 
@@ -40,12 +40,13 @@ def reassemble_imm(type: str, half_1, half_2= None):
 
     elif type == "B":
 
-        msb, bit_11 = list(half_1[0]),list(half_1[4])
+        msb, bit_11 = list(half_1[0]),list(half_2[4])
         imm_hi= half_1[1:7]
         imm_lo = half_2[0:4]
         imm = msb + bit_11 + imm_hi + imm_lo
         imm = "".join(imm)
         return imm
+
 
     # 11111011110111111111
     elif type == "J":
@@ -117,7 +118,7 @@ def s_type_decode(line: str):
     imm = reassemble_imm("S", imm_hi, imm_lo)
     #print(f"S-type immediate concat: {imm} = {msb} + {lsb}")
     imm = int(imm, 2)
-    print(f"S-type: {operation} x{rs2}, {imm}({rs1})")
+    print(f"S-type: {operation} x{rs2}, {imm}(x{rs1})")
 
 def b_type_decode(line: str):
     opcode = line[25:32]
